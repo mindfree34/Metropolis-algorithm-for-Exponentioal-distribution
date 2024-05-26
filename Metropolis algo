@@ -1,0 +1,28 @@
+import random
+from matplotlib import pyplot as plt
+
+arr_store = [0 for i in range(10000)]
+
+def expo_dist(x):
+    # Calculate the exponential using Taylor series approximation
+    n = 20  # Number of terms in the approximation
+    exp_x = 1.0
+    factorial = 1.0
+    for i in range(1, n + 1):
+        factorial *= i
+        term = x ** i / factorial
+        exp_x += term
+    return exp_x
+
+arr_store[0] = 2
+p_initial = expo_dist(-arr_store[0] ** 2)  # Negative sign for -x^2
+
+for i in range(9999):
+    p_trial = expo_dist(-arr_store[i] ** 2)  # Negative sign for -x^2
+    r = random.random()
+    if p_trial / p_initial > r:
+        arr_store[i + 1] = arr_store[i] + (-1 + 2 * random.random())
+    p_initial = p_trial
+
+plt.hist(arr_store, 25)
+plt.show()
